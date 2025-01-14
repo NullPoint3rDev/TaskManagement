@@ -1,0 +1,31 @@
+#spring.application.name=task-management
+
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/task_management
+    username: postgres
+    password: 1900Ascotpkwy
+    driver-class-name: org.postgresql.Driver
+jpa:
+  hibernate:
+    ddl-auto: update
+  properties:
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      format_sql: true
+      jdbc:
+          time_zone: UTC
+sql:
+  init:
+    mode: always
+
+jwt:
+  secret: mysecretkey
+  expiration: 3600000 # 1 hour in ms
+
+logging:
+  level:
+    root: INFO
