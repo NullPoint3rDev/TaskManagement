@@ -1,47 +1,74 @@
 package com.practice.task_management.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-import java.util.List;
+import java.util.Date;
 
+
+@Setter
+@Getter
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Table(name = "task")
 public class Task {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String title;
+    @Column(updatable = false)
+    private String projectSequence;
 
-    private String description;
+    @NotBlank(message = "Please include a project summary!")
+    private String summary;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private TaskStatus status;
+    private String name;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Priority priority;
+    private String status;
 
-    @ManyToOne
-    @JoinColumn(name = "author_id", nullable = false)
-    private User author;
+    private Integer priority;
 
-    @ManyToOne
-    @JoinColumn(name = "assignee_id")
-    private User assignee;
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private Date dueDate;
+    private String assignBy;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "backlog_id", updatable = false, nullable = false)
+    @JsonIgnore
+    private Backlog backlog;
+
+    @Column(updatable = false)
+    private String projectIdentifier;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
+    @Column(
+            name = "created_at", nullable = false,
+            columnDefinition = "WITHOUT TIMEZONE", updatable = false
+    )
+    @JsonFormat(pattern = "dd-MM-yyyy", timezone = "GMT+3")
+    private Date createdAt;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments;
+    @Column(name = "updated_at", columnDefinition = "WITHOUT TIMEZONE")
+    @JsonFormat(pattern = "dd-MM-yyyy", timezone = "GMT+3")
+    private Date updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = new Date();
+    }
 }
 
