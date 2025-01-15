@@ -1,0 +1,39 @@
+package com.practice.task_management.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.ArrayList;
+
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "backlog")
+public class Backlog {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private Integer Sequence = 0;
+
+    private String projectIdentifier;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "project_id", nullable = false)
+    @JsonIgnore
+    private Project project;
+
+    @OneToMany(cascade = CascadeType.REFRESH,
+            fetch = FetchType.EAGER,
+            mappedBy = "backlog",
+            orphanRemoval = true)
+    @JsonIgnore
+    private List<Task> projectTasks = new ArrayList<>();
+}
