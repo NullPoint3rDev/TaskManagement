@@ -2,6 +2,7 @@ package com.practice.task_management.service;
 
 import com.practice.task_management.dto.AuthRequest;
 import com.practice.task_management.dto.AuthResponse;
+import com.practice.task_management.exception.EmailAlreadyExistsException;
 import com.practice.task_management.model.Role;
 import com.practice.task_management.model.User;
 import com.practice.task_management.repository.UserRepository;
@@ -29,7 +30,7 @@ public class UserService {
                     .role(Role.USER).build();
             return userRepository.save(newUser);
         } catch (Exception e) {
-            throw new EmailExistsException("Email " + user.getEmail() + "already exists");
+            throw new EmailAlreadyExistsException("Email " + user.getEmail() + "already exists");
         }
     }
 

@@ -19,5 +19,5 @@ public class RegisterRequest {
     private String email;
 
     @NotBlank(message = "We need a password")
-    private String
+    private String password;
 }
