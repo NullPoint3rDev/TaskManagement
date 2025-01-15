@@ -100,7 +100,7 @@ public class ProjectService {
         projectRepository.delete(findProjectByIdentifier(projectId, username));
     }
 
-    public Project updateProjectById(String projectId, String username, Project updateProject) {
+    public Project updateProjectById(String projectId, Project updateProject, String username) {
         Project project = findProjectByIdentifier(projectId, username);
         project.setProjectName(updateProject.getProjectName());
         project.setProjectDescription(updateProject.getProjectDescription());
