@@ -5,6 +5,8 @@ import com.practice.task_management.dto.AuthResponse;
 import com.practice.task_management.dto.RegisterRequest;
 import com.practice.task_management.model.User;
 import com.practice.task_management.service.AuthService;
+import com.practice.task_management.service.UserService;
+import com.practice.task_management.service.ValidationErrorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,7 +27,7 @@ public class AuthController {
     private final ValidationErrorService validationErrorService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody User user BindingResult result) {
+    public ResponseEntity<?> register(@Valid @RequestBody User user, BindingResult result) {
         ResponseEntity<?> errorMap = validationErrorService.ValidationService(result);
 
         if (errorMap != null) return errorMap;

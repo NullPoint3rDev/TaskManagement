@@ -2,6 +2,7 @@ package com.practice.task_management.controller;
 
 import com.practice.task_management.model.Task;
 import com.practice.task_management.service.TaskService;
+import com.practice.task_management.service.ValidationErrorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -49,7 +50,7 @@ public class BacklogController {
 
     @GetMapping("/taskDetails/{pt_sequence}")
     public ResponseEntity<?> getTask(@PathVariable String pt_sequence, Principal principal) {
-        Task projectTask = taskService.findTaskByTaskSequence(pt_sequence, principal.getName());
+        Task projectTask = taskService.findTaskBySequence(pt_sequence, principal.getName());
 
         return new ResponseEntity<Task>(projectTask, HttpStatus.OK);
     }
