@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080" # Пробрасываем порт для приложения
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1900Ascotpkwy
+    depends_on:
+      - db # Указываем зависимость от базы данных
+
+  db:
+    image: postgres:16.6
+    container_name: postgres-db
+    ports:
+      - "5432:5432" # Пробрасываем порт для БД
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1900Ascotpkwy
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Хранение данных базы
+
+volumes:
+  postgres_data:
