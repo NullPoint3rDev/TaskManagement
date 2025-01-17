@@ -16,10 +16,9 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
+    private final static String SECURITY_KEY = "4A404E635266546A576E5A7234753778214125442A472D4B6150645367566B58";
 
-    private final static String SECRET_KEY = "4A404E635266546A576E5A7234753778214125442A472D4B6150645367566B58";
-
-    public String extractUsername(String token) {
+    public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -28,12 +27,14 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
+    // token generate
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
 
     private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts.builder()
+        return Jwts
+                .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -42,11 +43,13 @@ public class JwtService {
                 .compact();
     }
 
+    // check token validation
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
+        final String username = extractUserName(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
+    // check token expired
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
@@ -64,7 +67,7 @@ public class JwtService {
     }
 
     private Key getSigninsKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(SECURITY_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

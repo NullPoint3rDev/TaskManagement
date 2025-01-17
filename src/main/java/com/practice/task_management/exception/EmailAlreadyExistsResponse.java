@@ -7,8 +7,8 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class EmailAlreadyExistsResponse {
     private String email;
 }

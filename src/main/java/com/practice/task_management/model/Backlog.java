@@ -2,10 +2,7 @@ package com.practice.task_management.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +14,10 @@ import java.util.List;
 @Entity
 @Table(name = "backlog")
 public class Backlog {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private Integer Sequence = 0;
-
+    private Integer PTSequence = 0;
     private String projectIdentifier;
 
     @OneToOne(fetch = FetchType.EAGER)
@@ -31,10 +25,14 @@ public class Backlog {
     @JsonIgnore
     private Project project;
 
-    @OneToMany(cascade = CascadeType.REFRESH,
+    @OneToMany(
+            cascade = CascadeType.REFRESH,
             fetch = FetchType.EAGER,
             mappedBy = "backlog",
-            orphanRemoval = true)
+            orphanRemoval = true
+    )
     @JsonIgnore
     private List<Task> projectTasks = new ArrayList<>();
+
+
 }
