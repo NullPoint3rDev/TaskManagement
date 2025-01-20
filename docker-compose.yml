@@ -18,6 +18,7 @@ services:
   db:
     image: postgres:16.6
     container_name: postgres-db
+    platform: linux/arm64
     ports:
       - "5432:5432" # Пробрасываем порт для БД
     environment:
